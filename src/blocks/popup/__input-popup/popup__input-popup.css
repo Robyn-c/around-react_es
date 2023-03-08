@@ -1,0 +1,25 @@
+.popup__input-popup {
+  width: 358px;
+  padding: 10px 0;
+  border: 0;
+  outline: 0;
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box;
+  padding-top: 15px;
+  /* font */
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.popup__input-popup:valid {
+  border-bottom: 1px solid #000;
+}
+
+/* MOBILE*/
+@media screen and (max-width: 550px) {
+  .popup__input-popup {
+    width: 238px;
+  }
+}
