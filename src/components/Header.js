@@ -1,13 +1,11 @@
-import logo from "../images/logo.png";
+import React from "react";
+import logo from "../images/logo.svg";
 
-function Header() {
+export default function Header() {
   return (
     <header className="header">
-      <img className="header__logo" src={logo} alt="logo" />
-
-      <hr className="header__line" />
+      <img className="header__logo" alt="logo" src={logo} />
+      <div className="header__line-break" />
     </header>
   );
 }
-
-export default Header;
