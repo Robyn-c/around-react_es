@@ -1,16 +1,16 @@
-import React from 'react';
-import '../index.css';
-import Header from './Header';
-import Main from './Main';
-import Footer from './Footer';
-import PopupWithForm from './PopupWithForm';
-import ImagePopup from './ImagePopup';
-import EditProfilePopup from './EditProfilePopup.js';
-import api from '../utils/api';
-import Card from './Card';
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import EditAvatarPopup from './EditAvatarPopup';
-import AddPlacePopup from './AddPlacePopup';
+import React from "react";
+import "../index.css";
+import Header from "./Header";
+import Main from "./Main";
+import Footer from "./Footer";
+import PopupWithForm from "./PopupWithForm";
+import ImagePopup from "./ImagePopup";
+import EditProfilePopup from "./EditProfilePopup.js";
+import api from "../utils/api";
+import Card from "./Card";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import EditAvatarPopup from "./EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup";
 
 export default function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] =
@@ -20,19 +20,21 @@ export default function App() {
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
   const [popupEraseCard, setPopupEraseCard] = React.useState(false);
   const [popupPic, setPopupPic] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState('');
+  const [selectedCard, setSelectedCard] = React.useState("");
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
-  const [newPlace, setNewPlace] = React.useState('');
-  const [newPlaceCaption, setNewPlaceCaption] = React.useState('');
-  const [userName, setUserName] = React.useState('');
-  const [userDescription, setUserDescription] = React.useState('');
+  const [newPlace, setNewPlace] = React.useState("");
+  const [newPlaceCaption, setNewPlaceCaption] = React.useState("");
+  const [userName, setUserName] = React.useState("");
+  const [userDescription, setUserDescription] = React.useState("");
 
   React.useEffect(() => {
     api
       .getUserInfo()
       .then((userInfo) => setCurrentUser(userInfo))
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        throw new Error(err);
+      });
   }, []);
 
   React.useEffect(() => {
@@ -41,7 +43,9 @@ export default function App() {
       .then((cards) => {
         setCards(cards);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        throw new Error(err);
+      });
   }, []);
 
   function closeAllPopups() {
@@ -59,7 +63,7 @@ export default function App() {
     }
     if (popupPic) {
       setPopupPic(false);
-      setSelectedCard('');
+      setSelectedCard("");
     }
   }
 
@@ -84,7 +88,9 @@ export default function App() {
     api
       .changeUserInfo(data)
       .then((data) => setCurrentUser(data))
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        throw new Error(err);
+      });
     closeAllPopups();
   }
 
@@ -92,7 +98,9 @@ export default function App() {
     api
       .setProfilePic(data)
       .then((data) => setCurrentUser(data))
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        throw new Error(err);
+      });
     closeAllPopups();
   }
 
@@ -100,7 +108,9 @@ export default function App() {
     api
       .setNewPlace(data)
       .then((newCard) => setCards([newCard, ...cards]))
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        throw new Error(err);
+      });
     closeAllPopups();
   }
 
@@ -113,18 +123,20 @@ export default function App() {
           state.map((c) => (c._id === card._id ? newCard : c))
         );
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
 
   function handleCardDelete(card) {
     api
       .deleteCard(card._id)
-      .then((deletedCardId) =>
-        setCards((state) =>
-          state.filter((card) => (card._id === deletedCardId ? '' : card))
-        )
-      )
-      .catch((err) => console.error(err));
+      .then((deletedCard) => {
+        setCards((cards) => cards.filter((c) => c._id !== deletedCard._id));
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
 
   function handleNewPlaceCaptionChange(e) {
