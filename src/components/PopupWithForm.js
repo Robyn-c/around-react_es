@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
 export default function PopupWithForm(props) {
   const { title, inputs, submitText, isOpen, onClose, onSubmit } = props;
 
-  const popupOpenClass = isOpen ? ' popup_opened' : '';
-  const popupBodySizeClass = inputs.length < 2 ? ' popup__body_medium' : '';
+  const popupOpenClass = isOpen ? " popup_opened" : "";
+  const popupBodySizeClass = inputs.length < 2 ? " popup__body_medium" : "";
 
   return (
     <section className={`popup${popupOpenClass}`}>
@@ -24,12 +24,15 @@ export default function PopupWithForm(props) {
               onChange,
               value,
               ref,
+              error,
             }) => {
               return (
                 <React.Fragment key={id}>
                   <input
                     type={type}
-                    className="popup__input popup__input_error"
+                    className={`popup__input${
+                      error ? " popup__input_error" : ""
+                    }`}
                     placeholder={placeholder}
                     name={name}
                     id={id}
@@ -37,11 +40,13 @@ export default function PopupWithForm(props) {
                     maxLength={maxLength || null}
                     onChange={onChange ? (e) => onChange(e) : null}
                     ref={ref || null}
-                    value={value || value === '' ? value : undefined}
+                    value={value || value === "" ? value : undefined}
                     required
                   />
                   <div className="popup__input-underline"></div>
-                  <span className="popup__error-msg"></span>
+                  {error && (
+                    <span className="popup__input-error_active">{error}</span>
+                  )}
                 </React.Fragment>
               );
             }

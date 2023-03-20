@@ -131,12 +131,12 @@ export default function App() {
   function handleCardDelete(card) {
     api
       .deleteCard(card._id)
-      .then((deletedCard) => {
-        setCards((cards) => cards.filter((c) => c._id !== deletedCard._id));
-      })
-      .catch((err) => {
-        throw new Error(err);
-      });
+      .then((deletedCardId) =>
+        setCards((state) =>
+          state.filter((card) => (card._id === deletedCardId ? "" : card))
+        )
+      )
+      .catch((err) => console.error(err));
   }
 
   function handleNewPlaceCaptionChange(e) {
