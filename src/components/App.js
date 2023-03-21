@@ -29,23 +29,27 @@ export default function App() {
   const [userDescription, setUserDescription] = React.useState("");
 
   React.useEffect(() => {
-    api
-      .getUserInfo()
-      .then((userInfo) => setCurrentUser(userInfo))
-      .catch((err) => {
-        throw new Error(err);
-      });
+    try {
+      api
+        .getUserInfo()
+        .then((userInfo) => {
+          setCurrentUser(userInfo);
+        })
+    } catch (err) {
+      console.error("Error fetching user information: ", err);
+    }
   }, []);
 
   React.useEffect(() => {
-    api
-      .getInitialCards()
-      .then((cards) => {
-        setCards(cards);
-      })
-      .catch((err) => {
-        throw new Error(err);
-      });
+    try {
+      api
+        .getInitialCards()
+        .then((cards) => {
+          setCards(cards);
+        })
+    } catch (err) {
+      console.error("Error fetching initial cards: ", err);
+    }
   }, []);
 
   function closeAllPopups() {
@@ -105,15 +109,18 @@ export default function App() {
   }
 
   function handleAddPlaceSubmit(data) {
-    api
-      .setNewPlace(data)
-      .then((newCard) => setCards([newCard, ...cards]))
-      .catch((err) => {
-        throw new Error(err);
-      });
-    closeAllPopups();
+    try {
+      api
+        .setNewPlace(data)
+        .then((newCard) => setCards([newCard, ...cards]))
+        .catch((err) => {
+          throw new Error(err);
+        });
+      closeAllPopups();
+    } catch (err) {
+      console.error(err);
+    }
   }
-
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
     api
@@ -133,7 +140,7 @@ export default function App() {
       .deleteCard(card._id)
       .then((deletedCardId) =>
         setCards((state) =>
-          state.filter((card) => (card._id === deletedCardId ? "" : card))
+          state.filter((card) => card._id !== deletedCardId)
         )
       )
       .catch((err) => console.error(err));
@@ -157,6 +164,9 @@ export default function App() {
 
   const renderCards = () =>
     cards.map((card) => {
+      if (!card || !card._id) {
+        return null; // O algún otro valor predeterminado
+      }
       const { _id, owner, link, name, likes } = card;
 
       return (
