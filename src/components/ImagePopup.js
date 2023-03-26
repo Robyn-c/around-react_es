@@ -12,7 +12,7 @@ export default function ImagePopup(props) {
         <img
           className="popup__pic"
           alt={imagePopup.name}
-          src={`${imagePopup.link}`}
+          src={imagePopup.link}
         />
         <p className="popup__pic-name">{imagePopup.name}</p>
       </div>

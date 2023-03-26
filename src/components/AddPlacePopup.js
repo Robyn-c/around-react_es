@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import PopupWithForm from "./PopupWithForm";
 
-export default function AddPlacePopup(props) {
-  const { isOpen, onClose, onAddPlaceSubmit } = props;
+export default function AddPlacePopup({ isOpen, onClose, onAddPlaceSubmit }) {
   const [newPlaceCaption, setNewPlaceCaption] = useState("");
   const [newPlace, setNewPlace] = useState("");
   const [newPlaceCaptionError, setNewPlaceCaptionError] = useState("");

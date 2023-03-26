@@ -11,68 +11,90 @@ class Api {
     this._options = options;
   }
 
-  _fetchData() {
-    return fetch(this._baseUrl + this._specificUrl, this._options)
+  git_fetchData(specificUrl, options) {
+    return fetch(this._baseUrl + specificUrl, options)
       .then((res) => {
         if (res.ok) return res.json();
         return Promise.reject(`Error: ${res.status}`);
       })
       .catch((err) => console.error(err));
   }
-
+  
   getUserInfo() {
-    this._specificUrl = "users/me";
-    this._options.method = "GET";
-    delete this._options.body;
-    return this._fetchData();
+    const specificUrl = "users/me";
+    const options = {
+      method: "GET",
+      headers: this._options.headers,
+    };
+    delete options.body;
+    return this._fetchData(specificUrl, options);
   }
-
+  
   toggleLikeBtn(id, isLiked) {
-    this._specificUrl = `/cards/likes/${id} `;
-    this._options.method = isLiked ? "DELETE" : "PUT";
-    delete this._options.body;
-    return this._fetchData();
+    const specificUrl = `/cards/likes/${id}`;
+    const method = isLiked ? "DELETE" : "PUT";
+    const options = {
+      method: method,
+      headers: this._options.headers,
+    };
+    delete options.body;
+    return this._fetchData(specificUrl, options);
   }
-
+  
   deleteCard(id) {
-    this._specificUrl = `/cards/${id} `;
-    this._options.method = "DELETE";
-    delete this._options.body;
-    return this._fetchData().then(() => id);
+    const specificUrl = `/cards/${id}`;
+    const options = {
+      method: "DELETE",
+      headers: this._options.headers,
+    };
+    delete options.body;
+    return this._fetchData(specificUrl, options).then(() => id);
   }
-
+  
   setNewPlace(data) {
-    this._specificUrl = "/cards";
-    this._options.method = "POST";
-    this._options.body = JSON.stringify({
-      name: data.newPlaceCaption,
-      link: data.newPlace,
-    });
-    return this._fetchData();
+    const specificUrl = "/cards";
+    const options = {
+      method: "POST",
+      headers: this._options.headers,
+      body: JSON.stringify({
+        name: data.newPlaceCaption,
+        link: data.newPlace,
+      }),
+    };
+    return this._fetchData(specificUrl, options);
   }
-
+  
   changeUserInfo(data) {
-    this._specificUrl = "users/me";
-    this._options.method = "PATCH";
-    this._options.body = JSON.stringify({
-      name: data.name,
-      about: data.about,
-    });
-    return this._fetchData();
+    const specificUrl = "users/me";
+    const options = {
+      method: "PATCH",
+      headers: this._options.headers,
+      body: JSON.stringify({
+        name: data.name,
+        about: data.about,
+      }),
+    };
+    return this._fetchData(specificUrl, options);
   }
-
+  
   getInitialCards() {
-    this._specificUrl = "cards";
-    this._options.method = "GET";
-    delete this._options._body;
-    return this._fetchData();
+    const specificUrl = "cards";
+    const options = {
+      method: "GET",
+      headers: this._options.headers,
+    };
+    delete options.body;
+    return this._fetchData(specificUrl, options);
   }
-
+  
   setProfilePic(data) {
-    this._specificUrl = "users/me/avatar";
-    this._options.method = "PATCH";
-    this._options.body = JSON.stringify({ avatar: data.avatar });
-    return this._fetchData();
+    const specificUrl = "users/me/avatar";
+    const options = {
+      method: "PATCH",
+      headers: this._options.headers,
+      body: JSON.stringify({ avatar: data.avatar }),
+    };
+    return this._fetchData(specificUrl, options);
   }
 }
 
