@@ -11,7 +11,7 @@ class Api {
     this._options = options;
   }
 
-  git_fetchData(specificUrl, options) {
+  _fetchData(specificUrl, options) {
     return fetch(this._baseUrl + specificUrl, options)
       .then((res) => {
         if (res.ok) return res.json();
